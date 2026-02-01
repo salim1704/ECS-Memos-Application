@@ -1,42 +1,42 @@
 resource "aws_security_group" "endpoint_sg" {
-    name        = "endpoint_sg"  
-    description = "Security group for VPC endpoints"
-    vpc_id      = var.vpc_id
+  name        = "endpoint_sg"
+  description = "Security group for VPC endpoints"
+  vpc_id      = var.vpc_id
 
-ingress {
-  description = "Allow HTTPS"
-  from_port   = 443
-  to_port     = 443
-  protocol    = "tcp"
-  cidr_blocks = [var.vpc_cidr_block]
-      }
-    
-egress {
-  description = "Allow all outbound traffic"
-  from_port   = 0
-  to_port     = 0
-  protocol    = "-1"
-  cidr_blocks = ["0.0.0.0/0"]
-    }
-
-tags = {
-    Name = "endpoint_security_group"
+  ingress {
+    description     = "Allow HTTPS from ECS tasks"
+    from_port       = 443
+    to_port         = 443
+    protocol        = "tcp"
+    security_groups = [aws_security_group.ecs_task_sg.id]
   }
 
+  egress {
+    description = "Allow all outbound traffic"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "endpoint_security_group"
+  }
 }
 
 resource "aws_security_group" "alb_sg" {
   name        = "alb_sg"
   description = "Security group for ALB"
-  vpc_id      =  var.vpc_id
+  vpc_id      = var.vpc_id
 
   ingress {
-    description = "Allow HTTP"
+    description = "Allow HTTP from internet"
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
+
   ingress {
     description = "Allow HTTPS from internet"
     from_port   = 443
@@ -58,14 +58,12 @@ resource "aws_security_group" "alb_sg" {
   }
 }
 
-
 # ECS Task Security Group
 resource "aws_security_group" "ecs_task_sg" {
   name        = "ecs-task-sg"
   description = "Security group for ECS tasks"
   vpc_id      = var.vpc_id
 
-  # Inbound: Allow traffic from ALB on container port
   ingress {
     description     = "Allow traffic from ALB"
     from_port       = 8081
@@ -74,13 +72,12 @@ resource "aws_security_group" "ecs_task_sg" {
     security_groups = [aws_security_group.alb_sg.id]
   }
 
-  # Outbound: Allow HTTPS to VPC endpoints
   egress {
-    description = "Allow HTTPS to VPC endpoints"
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    cidr_blocks = [var.vpc_cidr_block]
+    description = "Allow all outbound"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   tags = {

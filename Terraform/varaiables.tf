@@ -27,3 +27,35 @@ variable "domain_name" {
   description = "Domain name for ACM certificate"
   type        = string
 }
+
+variable "container_image" {
+  description = "ECR image URI"
+  type        = string
+}
+
+variable "container_port" {
+  description = "Port the application listens on"
+  type        = number
+}
+
+variable "container_name" {
+  description = "ECS container name"
+  type = string
+  
+}
+
+variable "task_cpu" {
+  type        = number
+}
+
+variable "task_memory" {
+  type        = number
+}
+
+variable "aws_ecs_cluster_name" {
+  type = string
+}
+
+variable "app_count" {
+  type = number
+}

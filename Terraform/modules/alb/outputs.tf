@@ -13,3 +13,8 @@ output "target_group_arn" {
   value       = aws_lb_target_group.ECS_TG.arn
 }
 
+output "listener_https_arn" {
+  value = aws_lb_listener.https.arn
+}
+
+

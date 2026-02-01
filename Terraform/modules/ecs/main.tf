@@ -73,6 +73,13 @@ resource "aws_ecs_service" "this" {
 
   depends_on = [var.alb_listener_https_arn]
 
+  lifecycle {
+  ignore_changes = [
+    task_definition,
+    desired_count
+  ]
+}
+
   tags = {
     Name = "${var.container_name}-service"
   }

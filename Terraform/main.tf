@@ -62,7 +62,6 @@ module "route53" {
 module "ecs" {
   source = "./modules/ecs"
 
-  aws_ecs_cluster_name = var.aws_ecs_cluster_name
   container_name             = var.container_name
   container_image            = var.container_image
   container_port             = var.container_port

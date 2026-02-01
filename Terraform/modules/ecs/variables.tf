@@ -1,6 +1,7 @@
 variable "aws_ecs_cluster_name" {
   description = "ECS cluster name"
   type        = string
+   default    = "memos-cluster"
 }
 
 variable "container_name" {

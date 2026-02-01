@@ -10,11 +10,10 @@ output "alb_zone_id" {
 
 output "target_group_arn" {
   description = "ARN of the target group"
-  value       = aws_lb_target_group.ECS_TG.arn
+  value       = aws_lb_target_group.ecs_tg.arn
 }
-
 output "listener_https_arn" {
-  value = aws_lb_listener.https.arn
+  description = "ARN of the HTTPS listener"
+  value       = aws_lb_listener.https.arn 
 }
-
 

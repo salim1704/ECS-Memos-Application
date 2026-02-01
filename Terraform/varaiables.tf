@@ -52,10 +52,6 @@ variable "task_memory" {
   type        = number
 }
 
-variable "aws_ecs_cluster_name" {
-  type = string
-}
-
 variable "app_count" {
   type = number
 }

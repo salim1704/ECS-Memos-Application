@@ -39,3 +39,16 @@ module "alb" {
   alb_sg_id          = module.security_groups.alb_sg_id
   certificate_arn    = module.acm.certificate_arn 
 }
+
+# IAM Module
+module "iam" {
+  source = "./modules/iam"
+}
+
+# Route 53 Module
+module "route53" {
+  source = "./modules/route53"
+  domain_name   = var.domain_name
+  alb_dns_name  = module.alb.alb_dns_name
+  alb_zone_id   = module.alb.alb_zone_id
+}

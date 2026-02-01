@@ -33,7 +33,7 @@ jobs:
           find . -maxdepth 3 -type f -name "Dockerfile" -print
 
       - name: Build Docker image
-        run: docker build -t ${{ env.ECR_REPOSITORY }}:${{ github.sha }} -f docker/Dockerfile $GITHUB_WORKSPACE
+        run: docker build -t ${{ env.ECR_REPOSITORY }}:${{ github.sha }} -f Docker/Dockerfile .
 
 
       - name: Run Trivy vulnerability scanner

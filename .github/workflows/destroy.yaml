@@ -1,0 +1,72 @@
+name: Terraform Destroy
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: 'Type DESTROY to confirm'
+        required: true
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  destroy:
+    name: Terraform Destroy
+    runs-on: ubuntu-latest
+
+    # Only allow running from main/master
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+
+    defaults:
+      run:
+        working-directory: ./Terraform
+
+    env:
+      TF_VAR_domain_name: ${{ vars.DOMAIN_NAME }}
+      TF_VAR_container_image: ${{ vars.CONTAINER_IMAGE }}
+      TF_VAR_container_port: ${{ vars.CONTAINER_PORT }}
+      TF_VAR_container_name: ${{ vars.CONTAINER_NAME }}
+      TF_VAR_task_cpu: ${{ vars.TASK_CPU }}
+      TF_VAR_task_memory: ${{ vars.TASK_MEMORY }}
+      TF_VAR_app_count: ${{ vars.APP_COUNT }}
+
+    steps:
+      - name: Fail unless confirmed
+        run: |
+          if [ "${{ inputs.confirm }}" != "DESTROY" ]; then
+            echo "Confirmation failed. Type DESTROY to run this workflow."
+            exit 1
+          fi
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.6.0
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::044005400496:role/github-actions-role
+          aws-region: eu-west-2
+
+      - name: Terraform Init
+        run: terraform init -input=false
+
+      - name: Terraform Destroy
+        run: terraform destroy -auto-approve -input=false
+
+      - name: Verify destroy
+        run: |
+            count=$(terraform state list 2>/dev/null | wc -l | tr -d ' ')
+            if [ "$count" -eq 0 ]; then
+              echo "✅ All Terraform-managed resources destroyed"
+            else
+              echo "❌ $count Terraform-managed resources remain"
+              terraform state list || true
+              exit 1
+            fi

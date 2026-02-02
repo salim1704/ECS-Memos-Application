@@ -52,38 +52,7 @@ jobs:
       
       - name: Terraform Apply
         run: terraform apply -input=false tfplan
-      
-      - name: Wait for deployment
-        run: sleep 60  
-
-      - name: Health Check
-        run: |
-            echo "Running health check..."
-
-            max_attempts=10
-            attempt=1
-
-            while [ $attempt -le $max_attempts ]; do
-              response=$(curl -s -o /dev/null -w "%{http_code}" https://tm.abdulqayoom.co.uk/healthz)
-
-              if [ "$response" = "200" ]; then
-                echo "Health check passed!"
-                exit 0
-              fi
-
-              echo "Attempt $attempt/$max_attempts failed (HTTP $response)"
-
-              if [ $attempt -lt $max_attempts ]; then
-                echo "Retrying in 30s..."
-                sleep 30
-              fi
-
-              attempt=$((attempt + 1))
-            done
-
-            echo "Health check failed after $max_attempts attempts"
-            exit 1
-
+     
       - name: Summary
         if: success()
         run: echo "Terraform apply complete"

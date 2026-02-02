@@ -1,3 +1,10 @@
+# ECR Repository
+module "ecr" {
+  source = "./modules/ecr"
+
+  repository_name = "abdulqayoom-registry"
+}
+
 # VPC Module
 module "vpc" {
   source = "./modules/vpc"

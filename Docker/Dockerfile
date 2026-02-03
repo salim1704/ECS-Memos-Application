@@ -17,11 +17,14 @@ COPY --from=frontend-build /app/server/router/frontend/dist ./server/router/fron
 
 RUN go build -o memos ./cmd/memos
 
-# Run-app
+# Run-app as non-root
 FROM alpine:3.20
 WORKDIR /app
 
+RUN adduser -D -u 1000 user
 COPY --from=backend-build /app/memos ./memos
+RUN chown -R user:user /app && chmod 500 /app/memos
 
+USER user
 EXPOSE 8081
 CMD ["./memos"]

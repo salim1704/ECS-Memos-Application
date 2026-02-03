@@ -1,7 +1,7 @@
 # ECS Memos Deployment
 
 ## Overview
-Production-grade containerised application deployment on AWS using Docker, Terraform, and GitHub Actions CI/CD.
+An end-to-end AWS ECS deployment, built using Docker, Terraform, and GitHub Actions to automate infrastructure and application delivery.
 
 **Live Demo:** https://tm.abdulqayoom.co.uk
 
@@ -189,6 +189,7 @@ Tasks are registered with the Application Load Balancer target group and continu
 - OIDC authentication for CI/CD
 - State locking for safe concurrent operations
 - Manual infrastructure changes, automated deployments
+
 
 
 

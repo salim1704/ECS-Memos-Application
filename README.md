@@ -1,7 +1,7 @@
 # ECS Memos Deployment
 
 ## Overview
-An end-to-end AWS ECS deployment, built using Docker, Terraform, and GitHub Actions to automate infrastructure and application delivery.
+An end-to-end AWS ECS deployment of a privacy-focused memo application, built using Docker, Terraform, and GitHub Actions to automate infrastructure and application delivery.
 
 **Live Demo:** https://tm.abdulqayoom.co.uk
 
@@ -187,6 +187,7 @@ Tasks are registered with the Application Load Balancer target group and continu
 - OIDC authentication for CI/CD
 - State locking for safe concurrent operations
 - Manual infrastructure changes, automated deployments
+
 
 
 

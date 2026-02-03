@@ -5,8 +5,7 @@ Production-grade containerised application deployment on AWS using Docker, Terra
 
 **Live Demo:** https://tm.abdulqayoom.co.uk
 
-https://github.com/salim1704/ECS-Project/blob/main/attachments/memos-demo.mp4
-
+https://github.com/user-attachments/assets/81842e97-345b-41aa-a15c-b44f9ebca99e
 
 **Key Features:**
 - Infrastructure as Code (Terraform)
@@ -183,5 +182,6 @@ http://localhost:8081
 - OIDC authentication for CI/CD
 - State locking for safe concurrent operations
 - Manual infrastructure changes, automated deployments
+
 
 
